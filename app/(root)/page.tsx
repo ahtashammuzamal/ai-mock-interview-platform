@@ -1,8 +1,32 @@
+import { Button } from "@/components/ui/button";
+import InterviewCard from "@/components/InterviewCard"
+import Image from "next/image";
+import Link from "next/link";
+import { dummyInterviews } from "@/constants";
+
 const Page = () => {
   return (
     <>
-      <h1>Home</h1>
-      <b>H</b>
+      <section className="card-cta mt-4">
+        <div className="flex flex-col gap-6 max-w-lg">
+          <h3>Get Interview-Ready with AI-Powered Practice & Feedback</h3>
+          <p>Practice real interview questions & get instant feedback.</p>
+          <Button className="btn-primary">
+            <Link href={'/interview'}>
+              Start an interview
+            </Link>
+          </Button>
+        </div>
+        <Image src={'/robot.png'} height={400} width={400} alt="hero image" className="max-sm:hidden"/>
+      </section>
+      <section>
+        <h3>Your Past Interviews</h3>
+        <div className="flex gap-8 mt-8">
+          {dummyInterviews.map(interview => (
+            <InterviewCard {...interview} key={interview.id}/>
+          ))}
+        </div>
+      </section>
     </>
   );
 };
