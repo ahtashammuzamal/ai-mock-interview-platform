@@ -3,10 +3,10 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import DisplayTechIcons from "./DisplayTechIcons";
 
 const InterviewCard = ({
   interviewId,
-  userId,
   role,
   type,
   techstack,
@@ -50,11 +50,12 @@ const InterviewCard = ({
               width={22}
               alt="star"
             />
-            <p>{feedback ? `${feedback}/100` : '---/100'}</p>
+            <p>{feedback?.totalScore || '---'} /100</p>
           </div>
         </div>
         <p>{feedback?.finalAssessment ||  'Please take interview first. Then the feedback will show here.'}</p>
-        <div className="mt-4">
+        <div className="mt-4 flex justify-between items-center">
+          <DisplayTechIcons techStack={techstack}/>
           <Button className="btn-primary">
             <Link href={
               feedback ? `/interview/${interviewId}/feedback` : `/interview/${interviewId}`
