@@ -1,16 +1,12 @@
 "use client";
 
-import { signOut } from "firebase/auth";
 import { Button } from "@/components/ui/button";
-import { auth } from "@/firebase/client";
-import { useRouter } from "next/navigation";
+import { signOut } from "@/lib/actions/auth.action";
 
 const Logout = () => {
-  const router = useRouter();
   const handleLogout = async () => {
     try {
-      await signOut(auth);
-      router.push("/signup");
+      await signOut()
     } catch (e) {
       console.log(e);
     }

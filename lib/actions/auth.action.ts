@@ -107,3 +107,8 @@ export const isAuthenticated = async () => {
   const user = await getCurrentUser();
   return !!user;
 };
+
+export const signOut = async () => {
+  const cookieStore = await cookies()
+  cookieStore.delete('session')
+}

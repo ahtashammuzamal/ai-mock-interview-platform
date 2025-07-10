@@ -7,7 +7,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 const Page = async ({ params }: RouteParams) => {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
   const { id } = await params;
   const interview = await getInterviewById(id);
   if (!interview) redirect("/");
@@ -28,7 +28,13 @@ const Page = async ({ params }: RouteParams) => {
           <p>{interview.type} Interview</p>
         </div>
       </div>
-      <Agent userName={user?.name!} interviewId={id} questions={interview.questions} type="interview"/>
+      <Agent
+        userName={user?.name || ""}
+        userId={user?.id}
+        interviewId={id}
+        questions={interview.questions}
+        type="interview"
+      />
     </>
   );
 };

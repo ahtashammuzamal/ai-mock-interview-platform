@@ -4,15 +4,22 @@ import dayjs from "dayjs";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import DisplayTechIcons from "./DisplayTechIcons";
+import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import { getCurrentUser } from "@/lib/actions/auth.action";
 
-const InterviewCard = ({
+const InterviewCard = async ({
   id,
   role,
   type,
   techstack,
   createdAt,
 }: InterviewCardProps) => {
-  const feedback = null as Feedback | null;
+  const user = await getCurrentUser();
+
+  const feedback = (await getFeedbackByInterviewId({
+    interviewId: id!,
+    userId: user?.id!,
+  })) as Feedback | null;
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
   const formattedDate = dayjs(
@@ -44,23 +51,21 @@ const InterviewCard = ({
             <p>{formattedDate}</p>
           </div>
           <div className="flex gap-2">
-             <Image
-              src={"/star.svg"}
-              height={22}
-              width={22}
-              alt="star"
-            />
-            <p>{feedback?.totalScore || '---'} /100</p>
+            <Image src={"/star.svg"} height={22} width={22} alt="star" />
+            <p>{feedback?.totalScore || "---"} /100</p>
           </div>
         </div>
-        <p>{feedback?.finalAssessment ||  'Please take interview first. Then the feedback will show here.'}</p>
+        <p>
+          {feedback?.finalAssessment?.split(' ').slice(0, 10).join(' ') ||
+            "Please take interview first. Then the feedback will show here."}
+        </p>
         <div className="mt-4 flex justify-between items-center">
-          <DisplayTechIcons techStack={techstack}/>
+          <DisplayTechIcons techStack={techstack} />
           <Button className="btn-primary">
-            <Link href={
-              feedback ? `/interview/${id}/feedback` : `/interview/${id}`
-            }>
-              {feedback ? 'Check feedback' : 'View interview'}
+            <Link
+              href={feedback ? `/interview/${id}/feedback` : `/interview/${id}`}
+            >
+              {feedback ? "Check feedback" : "View interview"}
             </Link>
           </Button>
         </div>
